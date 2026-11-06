@@ -30,7 +30,7 @@ export default function Goals({
   const skillNameMap = useMemo(() => {
     const map = {};
     skills.forEach((s) => {
-      map[s.id] = s.name;
+      map[s._id || s.id] = s.name;
     });
     return map;
   }, [skills]);
@@ -126,7 +126,7 @@ export default function Goals({
         <div className="grid-3">
           {displayedGoals.map((goal) => (
             <GoalCard
-              key={goal.id}
+              key={goal._id || goal.id}
               goal={goal}
               skillName={goal.skillId ? skillNameMap[goal.skillId] : null}
               onToggleComplete={onToggleGoalComplete}

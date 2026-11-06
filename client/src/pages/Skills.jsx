@@ -192,7 +192,7 @@ export default function Skills({
         <div className="grid-3">
           {filteredSkills.map((skill) => (
             <SkillCard
-              key={skill.id}
+              key={skill._id || skill.id}
               skill={skill}
               onManageTasks={onManageTasks}
               onEditSkill={onOpenEditSkill}

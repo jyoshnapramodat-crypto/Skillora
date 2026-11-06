@@ -274,7 +274,7 @@ export default function Dashboard({
               attentionSkills.map((skill) => {
                 const stats = calculateSkillProgress(skill);
                 return (
-                  <div key={skill.id} className="attention-card-item">
+                  <div key={skill._id || skill.id} className="attention-card-item">
                     <div style={{ flex: 1, minWidth: 0 }}>
                       <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', marginBottom: '0.2rem' }}>
                         <span style={{ fontWeight: 700, fontSize: '0.92rem' }}>{skill.name}</span>
@@ -325,7 +325,7 @@ export default function Dashboard({
               </div>
             ) : (
               goalAnalysis.upcoming.slice(0, 4).map((goal) => (
-                <div key={goal.id} className="attention-card-item">
+                <div key={goal._id || goal.id} className="attention-card-item">
                   <div style={{ minWidth: 0, flex: 1 }}>
                     <div style={{ fontWeight: 700, fontSize: '0.92rem', marginBottom: '0.2rem' }}>
                       {goal.title}

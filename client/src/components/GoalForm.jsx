@@ -24,7 +24,7 @@ export default function GoalForm({
   useEffect(() => {
     if (initialGoal) {
       setTitle(initialGoal.title || '');
-      setSkillId(initialGoal.skillId || (skills[0]?.id || ''));
+      setSkillId(initialGoal.skillId || (skills[0]?._id || skills[0]?.id || ''));
       setTargetDate(initialGoal.targetDate || '');
       setPriority(initialGoal.priority || 'Medium');
       setDescription(initialGoal.description || '');
@@ -32,7 +32,7 @@ export default function GoalForm({
       setErrors({});
     } else {
       setTitle('');
-      setSkillId(skills[0]?.id || '');
+      setSkillId(skills[0]?._id || skills[0]?.id || '');
       // Default target date 14 days from today
       const defaultDate = new Date();
       defaultDate.setDate(defaultDate.getDate() + 14);
@@ -127,7 +127,7 @@ export default function GoalForm({
               >
                 <option value="">-- Independent Goal (No specific skill) --</option>
                 {skills.map((s) => (
-                  <option key={s.id} value={s.id}>
+                  <option key={s._id || s.id} value={s._id || s.id}>
                     {s.name} ({s.category})
                   </option>
                 ))}

@@ -61,7 +61,9 @@ export default function SkillForm({
       errs.name = 'Skill name is required.';
     } else {
       const duplicate = existingSkills.find(
-        (s) => s.name.toLowerCase() === name.trim().toLowerCase() && (!initialSkill || s.id !== initialSkill.id)
+        (s) =>
+          s.name.toLowerCase() === name.trim().toLowerCase() &&
+          (!initialSkill || (s._id || s.id) !== (initialSkill._id || initialSkill.id))
       );
       if (duplicate) {
         errs.name = 'A skill with this name already exists.';

@@ -334,12 +334,13 @@ export default function Portfolio({
             </span>
             <div style={{ display: 'flex', flexWrap: 'wrap', gap: '0.5rem' }}>
               {skills.map((s) => {
-                const isSelected = selectedSkillIds.includes(s.id);
+                const skillIdentifier = s._id || s.id;
+                const isSelected = selectedSkillIds.includes(skillIdentifier);
                 return (
                   <button
-                    key={s.id}
+                    key={skillIdentifier}
                     type="button"
-                    onClick={() => handleToggleSkillSelection(s.id)}
+                    onClick={() => handleToggleSkillSelection(skillIdentifier)}
                     className={`category-chip ${isSelected ? 'active' : ''}`}
                     style={{ fontSize: '0.78rem' }}
                   >
@@ -501,7 +502,7 @@ export default function Portfolio({
                 const stats = calculateSkillProgress(skill);
                 return (
                   <div
-                    key={skill.id}
+                    key={skill._id || skill.id}
                     style={{
                       padding: '1.25rem',
                       background: 'var(--bg-card-subtle)',
@@ -574,7 +575,7 @@ export default function Portfolio({
             <div className="grid-2">
               {goals.slice(0, 4).map((goal) => (
                 <div
-                  key={goal.id}
+                  key={goal._id || goal.id}
                   style={{
                     padding: '1rem',
                     background: 'var(--bg-cream-alt)',

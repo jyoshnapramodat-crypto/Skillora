@@ -22,6 +22,7 @@ export default function TaskList({
 
   if (!isOpen || !skill) return null;
 
+  const skillId = skill._id || skill.id;
   const stats = calculateSkillProgress(skill);
 
   const handleAddSubmit = (e) => {
@@ -30,7 +31,7 @@ export default function TaskList({
       setError('Task title cannot be empty.');
       return;
     }
-    onAddTask(skill.id, newTaskTitle.trim());
+    onAddTask(skillId, newTaskTitle.trim());
     setNewTaskTitle('');
     setError('');
   };
@@ -130,9 +131,9 @@ export default function TaskList({
                 <TaskItem
                   key={task.id}
                   task={task}
-                  onToggle={(taskId) => onToggleTask(skill.id, taskId)}
-                  onEdit={(taskId, newTitle) => onEditTask(skill.id, taskId, newTitle)}
-                  onDelete={(taskId) => onDeleteTask(skill.id, taskId)}
+                  onToggle={(taskId) => onToggleTask(skillId, taskId)}
+                  onEdit={(taskId, newTitle) => onEditTask(skillId, taskId, newTitle)}
+                  onDelete={(taskId) => onDeleteTask(skillId, taskId)}
                 />
               ))
             )}

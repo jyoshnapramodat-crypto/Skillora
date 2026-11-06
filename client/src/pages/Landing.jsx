@@ -507,11 +507,11 @@ export default function Landing({
           <div>
             <h5 style={{ fontSize: '0.9rem', fontWeight: 700, marginBottom: '1rem', color: 'var(--text-primary)' }}>Project Details</h5>
             <p style={{ fontSize: '0.84rem', color: 'var(--text-muted)', lineHeight: 1.5, marginBottom: '0.75rem' }}>
-              B.Tech Academic Mini Project in React.js, Vite & LocalStorage.
+              B.Tech Academic Project in Full-Stack MERN (React, Node.js, Express & MongoDB).
             </p>
             <div style={{ display: 'flex', gap: '0.65rem' }}>
               <a
-                href="https://github.com"
+                href="https://github.com/jyoshnapramodat-crypto/Skillora.git"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="btn-icon"
@@ -536,7 +536,7 @@ export default function Landing({
 
         <div className="footer-copyright">
           <span>© {new Date().getFullYear()} Skillora Portfolio Platform. Created for Academic Evaluation & Viva Defense.</span>
-          <span style={{ color: 'var(--lavender-700)', fontWeight: 600 }}>Pure Frontend Architecture (Zero Server Required)</span>
+          <span style={{ color: 'var(--lavender-700)', fontWeight: 600 }}>Full-Stack MERN Architecture (React + Express + MongoDB)</span>
         </div>
       </footer>
     </div>

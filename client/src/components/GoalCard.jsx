@@ -94,7 +94,7 @@ export default function GoalCard({
         <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', paddingTop: '0.65rem', borderTop: '1px solid var(--border-light)' }}>
           <button
             className={`btn btn-sm ${isCompleted ? 'btn-secondary' : 'btn-primary'}`}
-            onClick={() => onToggleComplete(goal.id)}
+            onClick={() => onToggleComplete(goal._id || goal.id)}
             style={{ padding: '0.35rem 0.75rem', fontSize: '0.78rem' }}
           >
             <CheckCircle size={14} />
@@ -105,7 +105,7 @@ export default function GoalCard({
             <button className="btn-icon" onClick={() => onEdit(goal)} title="Edit goal" aria-label="Edit goal">
               <Edit2 size={14} />
             </button>
-            <button className="btn-icon delete" onClick={() => onDelete(goal.id)} title="Delete goal" aria-label="Delete goal">
+            <button className="btn-icon delete" onClick={() => onDelete(goal._id || goal.id)} title="Delete goal" aria-label="Delete goal">
               <Trash2 size={14} />
             </button>
           </div>
