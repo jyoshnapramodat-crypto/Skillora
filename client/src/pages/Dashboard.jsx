@@ -58,13 +58,14 @@ export default function Dashboard({
   const goalAnalysis = analyzeGoalDeadlines(goals, reminders?.daysBeforeDeadline || 7);
 
   // Data for quick overview chart (top 5 skills)
-  const chartData = skills.slice(0, 6).map((skill) => {
+  const chartData = (skills || []).slice(0, 6).map((skill) => {
     const stats = calculateSkillProgress(skill);
+    const sName = skill?.name || 'Untitled';
     return {
-      name: skill.name.length > 14 ? skill.name.slice(0, 14) + '...' : skill.name,
-      fullName: skill.name,
+      name: sName.length > 14 ? sName.slice(0, 14) + '...' : sName,
+      fullName: sName,
       progress: stats.percentage,
-      category: skill.category
+      category: skill?.category || 'General'
     };
   });
 

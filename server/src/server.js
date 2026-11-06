@@ -26,12 +26,14 @@ dotenv.config({ path: path.join(__dirname, '../.env') });
 const app = express();
 
 // Initialize MongoDB connection
-connectDB().then(async () => {
-  // Ensure demo user is pre-seeded on startup
-  try {
-    await seedDemoUser();
-  } catch (err) {
-    console.error('[Startup] Demo user seed warning:', err.message);
+connectDB().then(async (conn) => {
+  if (conn) {
+    // Ensure demo user is pre-seeded on startup
+    try {
+      await seedDemoUser();
+    } catch (err) {
+      console.error('[Startup] Demo user seed warning:', err.message);
+    }
   }
 });
 

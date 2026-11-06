@@ -118,9 +118,9 @@ export default function App() {
   const loadBackendData = useCallback(async (user) => {
     try {
       const [backendSkills, backendGoals, reminderData, settingsData] = await Promise.all([
-        skillService.getSkills().catch(() => []),
-        goalService.getGoals().catch(() => []),
-        reminderService.getReminders().catch(() => ({ settings: null })),
+        skillService.getSkills().catch(() => null),
+        goalService.getGoals().catch(() => null),
+        reminderService.getReminders().catch(() => null),
         portfolioService.getSettings().catch(() => null)
       ]);
 
@@ -143,31 +143,35 @@ export default function App() {
             publicId: user.publicId || prev.profile.publicId,
             visibility: settingsData || prev.profile.visibility
           },
-          skills: backendSkills.map((s) => ({
-            id: s._id,
-            _id: s._id,
-            name: s.name,
-            category: s.category,
-            description: s.description,
-            startDate: s.startDate,
-            percentage: s.percentage,
-            status: s.status,
-            totalTasks: s.totalTasks,
-            completedTasks: s.completedTasks,
-            tasks: s.tasks || []
-          })),
-          goals: backendGoals.map((g) => ({
-            id: g._id,
-            _id: g._id,
-            title: g.title,
-            description: g.description,
-            skillId: g.skillId,
-            skillName: g.skillName,
-            targetDate: g.targetDate,
-            priority: g.priority,
-            status: g.status,
-            isOverdue: g.isOverdue
-          })),
+          skills: Array.isArray(backendSkills)
+            ? backendSkills.map((s) => ({
+                id: s._id,
+                _id: s._id,
+                name: s.name,
+                category: s.category,
+                description: s.description,
+                startDate: s.startDate,
+                percentage: s.percentage,
+                status: s.status,
+                totalTasks: s.totalTasks,
+                completedTasks: s.completedTasks,
+                tasks: s.tasks || []
+              }))
+            : prev.skills,
+          goals: Array.isArray(backendGoals)
+            ? backendGoals.map((g) => ({
+                id: g._id,
+                _id: g._id,
+                title: g.title,
+                description: g.description,
+                skillId: g.skillId,
+                skillName: g.skillName,
+                targetDate: g.targetDate,
+                priority: g.priority,
+                status: g.status,
+                isOverdue: g.isOverdue
+              }))
+            : prev.goals,
           reminders: reminderData?.settings || prev.reminders
         };
         saveUserData(user.id || user._id, next);
@@ -191,8 +195,12 @@ export default function App() {
           setActiveUser(user);
           loadBackendData(user);
         })
-        .catch(() => {
-          clearStoredToken();
+        .catch((err) => {
+          if (err?.response?.status === 401) {
+            clearStoredToken();
+          } else {
+            console.warn('[Skillora Auth] Server unreachable, running in offline mode:', err.message);
+          }
         });
     }
   }, [loadBackendData]);

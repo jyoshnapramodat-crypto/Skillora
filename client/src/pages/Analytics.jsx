@@ -61,13 +61,14 @@ export default function Analytics({
   const weeklyActivity = getWeeklyActivityView(activityLog);
 
   // 1. Skill-wise progress comparison data
-  const skillComparisonData = skills.map((s) => {
+  const skillComparisonData = (skills || []).map((s) => {
     const stats = calculateSkillProgress(s);
+    const sName = s?.name || 'Untitled';
     return {
-      name: s.name.length > 15 ? s.name.slice(0, 15) + '...' : s.name,
-      fullName: s.name,
+      name: sName.length > 15 ? sName.slice(0, 15) + '...' : sName,
+      fullName: sName,
       progress: stats.percentage,
-      category: s.category
+      category: s?.category || 'General'
     };
   });
 

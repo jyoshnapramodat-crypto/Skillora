@@ -75,13 +75,13 @@ export default function Portfolio({
   const activeSkills = publicData ? publicData.skills : skills;
   const activeGoals = publicData ? publicData.goals : goals;
 
-  const visibility = (publicData ? publicData.settings : profile.visibility) || {
+  const visibility = (publicData ? publicData.settings : profile?.visibility) || {
     showBio: true,
     showEducation: true,
     showSocials: true,
     showGoals: true,
     showStreaks: true,
-    selectedSkillIds: activeSkills.map((s) => s.id || s._id)
+    selectedSkillIds: (activeSkills || []).map((s) => s.id || s._id)
   };
 
   const selectedSkillIds = visibility.selectedSkillIds || [];

@@ -63,11 +63,12 @@ api.interceptors.request.use(
 api.interceptors.response.use(
   (response) => response,
   (error) => {
-    const message =
+    const formattedMessage =
       error.response?.data?.message ||
       error.message ||
       'Unable to connect to Skillora server. Please ensure the backend is running.';
-    return Promise.reject({ ...error, message });
+    error.message = formattedMessage;
+    return Promise.reject(error);
   }
 );
 
