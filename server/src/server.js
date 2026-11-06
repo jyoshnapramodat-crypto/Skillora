@@ -74,7 +74,17 @@ app.use(errorHandler);
 
 const PORT = process.env.PORT || 5000;
 
-app.listen(PORT, () => {
+const server = app.listen(PORT, () => {
   console.log(`[Skillora Server] Running in ${process.env.NODE_ENV || 'development'} mode on http://localhost:${PORT}`);
+});
+
+server.on('error', (err) => {
+  if (err.code === 'EADDRINUSE') {
+    console.error(`\n[Skillora Server] Error: Port ${PORT} is already in use by another running process.`);
+    console.error(`[Skillora Server] Please stop the other process or run: npx kill-port ${PORT}\n`);
+    process.exit(1);
+  } else {
+    console.error('[Skillora Server] Server error:', err);
+  }
 });
 
