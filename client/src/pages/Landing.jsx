@@ -31,7 +31,8 @@ export default function Landing({
   onNavigateToLogin,
   onNavigateToRegister,
   onNavigateToContact,
-  onNavigateToAbout
+  onNavigateToAbout,
+  onNavigateToAdmin
 }) {
   const [quickContactName, setQuickContactName] = useState('');
   const [quickContactEmail, setQuickContactEmail] = useState('');
@@ -492,6 +493,7 @@ export default function Landing({
               <li><a onClick={onNavigateToLogin} style={{ cursor: 'pointer' }}>Sign In</a></li>
               <li><a onClick={onNavigateToRegister} style={{ cursor: 'pointer' }}>Create Free Account</a></li>
               <li><a onClick={onEnterDemo} style={{ cursor: 'pointer' }}>Demo Student Workspace</a></li>
+              <li><a onClick={onNavigateToAdmin} style={{ cursor: 'pointer', color: 'var(--lavender-700)', fontWeight: 600 }}>Admin Portal</a></li>
             </ul>
           </div>
 

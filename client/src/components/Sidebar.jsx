@@ -12,7 +12,8 @@ import {
   LogOut,
   X,
   Compass,
-  UserCheck
+  UserCheck,
+  ShieldCheck
 } from 'lucide-react';
 
 export const NAV_ITEMS = [
@@ -22,6 +23,7 @@ export const NAV_ITEMS = [
   { id: 'analytics', label: 'Analytics', icon: BarChart3 },
   { id: 'profile', label: 'My Profile', icon: User },
   { id: 'portfolio', label: 'Shareable Portfolio', icon: Share2 },
+  { id: 'admin', label: 'Admin Portal', icon: ShieldCheck },
   { id: 'about', label: 'About Skillora', icon: Info },
   { id: 'contact', label: 'Support & Contact', icon: Mail }
 ];

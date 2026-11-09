@@ -148,6 +148,18 @@ export default function Navbar({
                 type="button"
                 onClick={() => {
                   setIsDropdownOpen(false);
+                  onNavigate('admin');
+                }}
+                className="sidebar-link"
+                style={{ width: '100%', borderRadius: 0, padding: '0.55rem 1rem', fontSize: '0.85rem', color: 'var(--lavender-700)' }}
+              >
+                <Sparkles size={15} /> Admin Dashboard
+              </button>
+
+              <button
+                type="button"
+                onClick={() => {
+                  setIsDropdownOpen(false);
                   onLogout();
                 }}
                 className="sidebar-link"

@@ -26,7 +26,8 @@ export default function Auth({
   onLoginSuccess,
   onRegisterSuccess,
   onDemoLogin,
-  onBackToHome
+  onBackToHome,
+  onNavigateToAdmin
 }) {
   const [mode, setMode] = useState(initialMode); // 'login' | 'register'
   const [showPassword, setShowPassword] = useState(false);
@@ -392,6 +393,30 @@ export default function Auth({
                     Create Account
                   </button>
                 </div>
+
+                {onNavigateToAdmin && (
+                  <div style={{ textAlign: 'center', marginTop: '1.25rem', paddingTop: '1rem', borderTop: '1px solid var(--border-light)' }}>
+                    <button
+                      type="button"
+                      onClick={onNavigateToAdmin}
+                      style={{
+                        display: 'inline-flex',
+                        alignItems: 'center',
+                        gap: '0.4rem',
+                        fontSize: '0.8rem',
+                        color: 'var(--lavender-800)',
+                        fontWeight: 600,
+                        background: 'var(--lavender-50)',
+                        border: '1px solid var(--lavender-200)',
+                        padding: '0.35rem 0.85rem',
+                        borderRadius: '999px',
+                        cursor: 'pointer'
+                      }}
+                    >
+                      <Zap size={13} /> Looking for Platform Admin Portal? Click here
+                    </button>
+                  </div>
+                )}
               </form>
             )}
 

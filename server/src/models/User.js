@@ -65,6 +65,24 @@ const userSchema = new mongoose.Schema(
       trim: true,
       lowercase: true
     },
+    role: {
+      type: String,
+      enum: ['user', 'admin'],
+      default: 'user'
+    },
+    plan: {
+      type: String,
+      enum: ['free', 'pro', 'enterprise'],
+      default: 'free'
+    },
+    subscriptionAmount: {
+      type: Number,
+      default: 0
+    },
+    lastLoginAt: {
+      type: Date,
+      default: Date.now
+    },
     isDemo: {
       type: Boolean,
       default: false

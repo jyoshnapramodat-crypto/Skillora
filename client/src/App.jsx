@@ -17,6 +17,7 @@ import Profile from './pages/Profile';
 import Portfolio from './pages/Portfolio';
 import About from './pages/About';
 import Contact from './pages/Contact';
+import AdminDashboard from './pages/AdminDashboard';
 
 import {
   initializeStorage,
@@ -42,11 +43,14 @@ import migrationService from './services/migrationService';
 import { getStoredToken, clearStoredToken } from './services/api';
 
 export default function App() {
-  // Navigation state (supports direct portfolio preview via ?view=portfolio or ?portfolio=slug)
+  // Navigation state (supports direct portfolio preview via ?view=portfolio or ?portfolio=slug, or admin via ?view=admin)
   const [currentPage, setCurrentPage] = useState(() => {
     const params = new URLSearchParams(window.location.search);
     if (params.get('view') === 'portfolio' || params.get('portfolio')) {
       return 'portfolio';
+    }
+    if (params.get('view') === 'admin' || window.location.pathname === '/admin') {
+      return 'admin';
     }
     return 'landing';
   });
@@ -118,9 +122,9 @@ export default function App() {
   const loadBackendData = useCallback(async (user) => {
     try {
       const [backendSkills, backendGoals, reminderData, settingsData] = await Promise.all([
-        skillService.getSkills().catch(() => null),
-        goalService.getGoals().catch(() => null),
-        reminderService.getReminders().catch(() => null),
+        skillService.getSkills().catch(() => []),
+        goalService.getGoals().catch(() => []),
+        reminderService.getReminders().catch(() => ({ settings: null })),
         portfolioService.getSettings().catch(() => null)
       ]);
 
@@ -143,35 +147,31 @@ export default function App() {
             publicId: user.publicId || prev.profile.publicId,
             visibility: settingsData || prev.profile.visibility
           },
-          skills: Array.isArray(backendSkills)
-            ? backendSkills.map((s) => ({
-                id: s._id,
-                _id: s._id,
-                name: s.name,
-                category: s.category,
-                description: s.description,
-                startDate: s.startDate,
-                percentage: s.percentage,
-                status: s.status,
-                totalTasks: s.totalTasks,
-                completedTasks: s.completedTasks,
-                tasks: s.tasks || []
-              }))
-            : prev.skills,
-          goals: Array.isArray(backendGoals)
-            ? backendGoals.map((g) => ({
-                id: g._id,
-                _id: g._id,
-                title: g.title,
-                description: g.description,
-                skillId: g.skillId,
-                skillName: g.skillName,
-                targetDate: g.targetDate,
-                priority: g.priority,
-                status: g.status,
-                isOverdue: g.isOverdue
-              }))
-            : prev.goals,
+          skills: backendSkills.map((s) => ({
+            id: s._id,
+            _id: s._id,
+            name: s.name,
+            category: s.category,
+            description: s.description,
+            startDate: s.startDate,
+            percentage: s.percentage,
+            status: s.status,
+            totalTasks: s.totalTasks,
+            completedTasks: s.completedTasks,
+            tasks: s.tasks || []
+          })),
+          goals: backendGoals.map((g) => ({
+            id: g._id,
+            _id: g._id,
+            title: g.title,
+            description: g.description,
+            skillId: g.skillId,
+            skillName: g.skillName,
+            targetDate: g.targetDate,
+            priority: g.priority,
+            status: g.status,
+            isOverdue: g.isOverdue
+          })),
           reminders: reminderData?.settings || prev.reminders
         };
         saveUserData(user.id || user._id, next);
@@ -195,12 +195,8 @@ export default function App() {
           setActiveUser(user);
           loadBackendData(user);
         })
-        .catch((err) => {
-          if (err?.response?.status === 401) {
-            clearStoredToken();
-          } else {
-            console.warn('[Skillora Auth] Server unreachable, running in offline mode:', err.message);
-          }
+        .catch(() => {
+          clearStoredToken();
         });
     }
   }, [loadBackendData]);
@@ -844,6 +840,20 @@ export default function App() {
           }}
           onNavigateToAbout={() => setCurrentPage('about')}
           onNavigateToContact={() => setCurrentPage('contact')}
+          onNavigateToAdmin={() => setCurrentPage('admin')}
+        />
+        <ToastMessage toasts={toasts} onDismiss={handleDismissToast} />
+      </>
+    );
+  }
+
+  // 1.5. Admin Dashboard / Portal View
+  if (currentPage === 'admin') {
+    return (
+      <>
+        <AdminDashboard
+          onNavigateHome={() => setCurrentPage('landing')}
+          onAdminLoggedOut={() => setCurrentPage('landing')}
         />
         <ToastMessage toasts={toasts} onDismiss={handleDismissToast} />
       </>
@@ -860,6 +870,7 @@ export default function App() {
           onRegisterSuccess={handleRegisterSuccess}
           onDemoLogin={handleDemoLogin}
           onBackToHome={() => setCurrentPage('landing')}
+          onNavigateToAdmin={() => setCurrentPage('admin')}
         />
         <ToastMessage toasts={toasts} onDismiss={handleDismissToast} />
       </>
