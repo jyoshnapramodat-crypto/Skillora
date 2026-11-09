@@ -4,27 +4,23 @@ import {
   DollarSign,
   TrendingUp,
   Award,
-  Target,
-  Activity,
   ShieldCheck,
   LogOut,
   RefreshCw,
-  Clock,
-  ArrowUpRight,
   Database,
   Cloud,
   CheckCircle2,
   Lock,
   Mail,
   ArrowLeft,
-  Server
+  Server,
+  Zap,
+  Activity
 } from 'lucide-react';
 import adminService from '../services/adminService';
 import {
   AreaChart,
   Area,
-  BarChart,
-  Bar,
   XAxis,
   YAxis,
   CartesianGrid,
@@ -46,7 +42,6 @@ export default function AdminDashboard({ onNavigateHome, onAdminLoggedOut }) {
   const [isLoadingMetrics, setIsLoadingMetrics] = useState(false);
   const [metricsError, setMetricsError] = useState('');
 
-  // Auto load metrics if admin is logged in
   useEffect(() => {
     if (adminUser) {
       loadMetrics();
@@ -91,106 +86,291 @@ export default function AdminDashboard({ onNavigateHome, onAdminLoggedOut }) {
     if (onAdminLoggedOut) onAdminLoggedOut();
   };
 
-  // If NOT logged in as admin, show modern Admin Login page
+  // ------------------ ADMIN LOGIN SCREEN ------------------
   if (!adminUser) {
     return (
-      <div className="min-h-screen bg-slate-900 text-slate-100 flex flex-col justify-center items-center p-6 relative overflow-hidden">
-        {/* Ambient background glow */}
-        <div className="absolute top-1/4 left-1/3 w-96 h-96 bg-purple-600/20 rounded-full blur-3xl pointer-events-none" />
-        <div className="absolute bottom-1/4 right-1/3 w-96 h-96 bg-indigo-600/20 rounded-full blur-3xl pointer-events-none" />
-
-        <div className="w-full max-w-md bg-slate-800/90 backdrop-blur-xl border border-slate-700/80 rounded-2xl shadow-2xl p-8 z-10">
-          <div className="flex items-center justify-between mb-8">
+      <div
+        style={{
+          minHeight: '100vh',
+          backgroundColor: '#faf7f2',
+          backgroundImage: 'radial-gradient(#eedfce 1px, transparent 1px)',
+          backgroundSize: '24px 24px',
+          display: 'flex',
+          flexDirection: 'column',
+          alignItems: 'center',
+          justifyContent: 'center',
+          padding: '2rem 1.5rem',
+          fontFamily: "'Plus Jakarta Sans', system-ui, -apple-system, sans-serif",
+          color: '#24202e'
+        }}
+      >
+        <div
+          style={{
+            width: '100%',
+            maxWidth: '460px',
+            backgroundColor: '#ffffff',
+            borderRadius: '20px',
+            border: '1px solid #e8dfd5',
+            boxShadow: '0 20px 45px -15px rgba(68, 36, 127, 0.12), 0 0 0 1px rgba(220, 205, 190, 0.4)',
+            padding: '2.5rem',
+            boxSizing: 'border-box'
+          }}
+        >
+          {/* Top header navigation */}
+          <div
+            style={{
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'space-between',
+              marginBottom: '2rem'
+            }}
+          >
             <button
+              type="button"
               onClick={onNavigateHome}
-              className="flex items-center gap-1.5 text-xs text-slate-400 hover:text-white transition-colors"
+              style={{
+                display: 'inline-flex',
+                alignItems: 'center',
+                gap: '0.4rem',
+                fontSize: '0.82rem',
+                fontWeight: 600,
+                color: '#57339b',
+                background: '#f6f3fc',
+                border: '1px solid #ddd0f1',
+                padding: '0.45rem 0.85rem',
+                borderRadius: '8px',
+                cursor: 'pointer',
+                transition: 'all 0.2s'
+              }}
             >
-              <ArrowLeft className="w-4 h-4" /> Return to Skillora
+              <ArrowLeft size={14} /> Back to Skillora
             </button>
-            <div className="flex items-center gap-1 px-2.5 py-1 rounded-full bg-purple-500/10 border border-purple-500/30 text-purple-400 text-xs font-medium">
-              <ShieldCheck className="w-3.5 h-3.5" /> Admin Portal
-            </div>
+
+            <span
+              style={{
+                display: 'inline-flex',
+                alignItems: 'center',
+                gap: '0.35rem',
+                fontSize: '0.72rem',
+                fontWeight: 700,
+                textTransform: 'uppercase',
+                letterSpacing: '0.05em',
+                color: '#57339b',
+                backgroundColor: '#eee7f8',
+                padding: '0.3rem 0.65rem',
+                borderRadius: '999px',
+                border: '1px solid #ddd0f1'
+              }}
+            >
+              <ShieldCheck size={13} /> Admin Portal
+            </span>
           </div>
 
-          <div className="text-center mb-6">
-            <div className="w-14 h-14 mx-auto mb-3 bg-gradient-to-tr from-purple-600 to-indigo-500 rounded-2xl flex items-center justify-center shadow-lg shadow-purple-500/30">
-              <ShieldCheck className="w-8 h-8 text-white" />
+          {/* Icon and Title */}
+          <div style={{ textAlign: 'center', marginBottom: '2rem' }}>
+            <div
+              style={{
+                width: '60px',
+                height: '60px',
+                margin: '0 auto 1.25rem',
+                background: 'linear-gradient(135deg, #6f47b6, #44247f)',
+                borderRadius: '16px',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                boxShadow: '0 8px 20px -4px rgba(111, 71, 182, 0.35)',
+                color: '#ffffff'
+              }}
+            >
+              <ShieldCheck size={30} />
             </div>
-            <h1 className="text-2xl font-bold tracking-tight text-white">Skillora Command Center</h1>
-            <p className="text-sm text-slate-400 mt-1">Platform metrics, user management & profit telemetry</p>
+            <h1
+              style={{
+                fontSize: '1.65rem',
+                fontWeight: 800,
+                color: '#24202e',
+                letterSpacing: '-0.02em',
+                margin: '0 0 0.5rem 0'
+              }}
+            >
+              Skillora Command Center
+            </h1>
+            <p style={{ fontSize: '0.88rem', color: '#6e677c', margin: 0, lineHeight: 1.5 }}>
+              Platform metrics, registered user analytics & revenue telemetry
+            </p>
           </div>
 
           {loginError && (
-            <div className="mb-4 p-3 bg-rose-500/10 border border-rose-500/30 rounded-xl text-rose-300 text-xs leading-relaxed">
+            <div
+              style={{
+                padding: '0.85rem 1rem',
+                marginBottom: '1.5rem',
+                backgroundColor: '#fdf2f2',
+                border: '1px solid #f8b4b4',
+                borderRadius: '10px',
+                color: '#9b1c1c',
+                fontSize: '0.84rem',
+                lineHeight: 1.4
+              }}
+            >
               {loginError}
             </div>
           )}
 
-          <form onSubmit={handleAdminLogin} className="space-y-4">
-            <div>
-              <label className="block text-xs font-semibold text-slate-300 uppercase tracking-wider mb-1.5">
-                Admin Email
+          {/* Admin Login Form */}
+          <form onSubmit={handleAdminLogin}>
+            <div style={{ marginBottom: '1.25rem' }}>
+              <label
+                style={{
+                  display: 'block',
+                  fontSize: '0.75rem',
+                  fontWeight: 700,
+                  textTransform: 'uppercase',
+                  letterSpacing: '0.05em',
+                  color: '#44247f',
+                  marginBottom: '0.45rem'
+                }}
+              >
+                Admin Email Address
               </label>
-              <div className="relative">
-                <Mail className="w-4 h-4 text-slate-400 absolute left-3.5 top-3" />
+              <div style={{ position: 'relative', display: 'flex', alignItems: 'center' }}>
+                <Mail
+                  size={16}
+                  style={{ position: 'absolute', left: '1rem', color: '#8862cb', pointerEvents: 'none' }}
+                />
                 <input
                   type="email"
                   required
                   value={loginEmail}
                   onChange={(e) => setLoginEmail(e.target.value)}
-                  className="w-full bg-slate-900/80 border border-slate-700 rounded-xl pl-10 pr-4 py-2.5 text-sm text-white focus:outline-none focus:border-purple-500 transition-colors"
+                  style={{
+                    width: '100%',
+                    padding: '0.75rem 1rem 0.75rem 2.6rem',
+                    fontSize: '0.92rem',
+                    borderRadius: '10px',
+                    border: '1.5px solid #dcd3c7',
+                    backgroundColor: '#fbf9f6',
+                    color: '#24202e',
+                    outline: 'none',
+                    boxSizing: 'border-box'
+                  }}
                   placeholder="admin@skillora.dev"
                 />
               </div>
             </div>
 
-            <div>
-              <label className="block text-xs font-semibold text-slate-300 uppercase tracking-wider mb-1.5">
+            <div style={{ marginBottom: '1.5rem' }}>
+              <label
+                style={{
+                  display: 'block',
+                  fontSize: '0.75rem',
+                  fontWeight: 700,
+                  textTransform: 'uppercase',
+                  letterSpacing: '0.05em',
+                  color: '#44247f',
+                  marginBottom: '0.45rem'
+                }}
+              >
                 Master Password
               </label>
-              <div className="relative">
-                <Lock className="w-4 h-4 text-slate-400 absolute left-3.5 top-3" />
+              <div style={{ position: 'relative', display: 'flex', alignItems: 'center' }}>
+                <Lock
+                  size={16}
+                  style={{ position: 'absolute', left: '1rem', color: '#8862cb', pointerEvents: 'none' }}
+                />
                 <input
                   type="password"
                   required
                   value={loginPassword}
                   onChange={(e) => setLoginPassword(e.target.value)}
-                  className="w-full bg-slate-900/80 border border-slate-700 rounded-xl pl-10 pr-4 py-2.5 text-sm text-white focus:outline-none focus:border-purple-500 transition-colors"
+                  style={{
+                    width: '100%',
+                    padding: '0.75rem 1rem 0.75rem 2.6rem',
+                    fontSize: '0.92rem',
+                    borderRadius: '10px',
+                    border: '1.5px solid #dcd3c7',
+                    backgroundColor: '#fbf9f6',
+                    color: '#24202e',
+                    outline: 'none',
+                    boxSizing: 'border-box'
+                  }}
                   placeholder="••••••••••••"
                 />
               </div>
             </div>
 
-            <div className="bg-slate-900/50 rounded-xl p-3 border border-slate-700/60 text-xs text-slate-400 space-y-1">
-              <div className="font-semibold text-slate-300 flex items-center gap-1.5">
-                <Database className="w-3.5 h-3.5 text-purple-400" /> Default Root Credentials:
+            {/* Default credential hint banner */}
+            <div
+              style={{
+                backgroundColor: '#f6f3fc',
+                border: '1px solid #ddd0f1',
+                borderRadius: '10px',
+                padding: '0.85rem 1rem',
+                marginBottom: '1.5rem',
+                fontSize: '0.8rem',
+                color: '#44247f'
+              }}
+            >
+              <div style={{ fontWeight: 700, marginBottom: '0.35rem', display: 'flex', alignItems: 'center', gap: '0.4rem' }}>
+                <Database size={13} color="#6f47b6" /> Default Root Credentials:
               </div>
-              <div>Email: <span className="font-mono text-slate-200">admin@skillora.dev</span></div>
-              <div>Password: <span className="font-mono text-slate-200">Admin@Skillora2026!</span></div>
+              <div style={{ color: '#57339b' }}>
+                Email: <code style={{ backgroundColor: '#ffffff', padding: '0.1rem 0.35rem', borderRadius: '4px', border: '1px solid #ddd0f1' }}>admin@skillora.dev</code>
+              </div>
+              <div style={{ color: '#57339b', marginTop: '0.2rem' }}>
+                Password: <code style={{ backgroundColor: '#ffffff', padding: '0.1rem 0.35rem', borderRadius: '4px', border: '1px solid #ddd0f1' }}>Admin@Skillora2026!</code>
+              </div>
             </div>
 
             <button
               type="submit"
               disabled={isLoggingIn}
-              className="w-full py-3 px-4 rounded-xl font-semibold text-sm bg-gradient-to-r from-purple-600 to-indigo-600 hover:from-purple-500 hover:to-indigo-500 text-white shadow-lg shadow-purple-600/30 transition-all flex items-center justify-center gap-2 cursor-pointer disabled:opacity-50"
+              style={{
+                width: '100%',
+                padding: '0.85rem 1.25rem',
+                fontSize: '0.95rem',
+                fontWeight: 700,
+                color: '#ffffff',
+                background: 'linear-gradient(135deg, #6f47b6, #44247f)',
+                border: 'none',
+                borderRadius: '10px',
+                cursor: 'pointer',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                gap: '0.5rem',
+                boxShadow: '0 8px 18px -4px rgba(111, 71, 182, 0.4)',
+                opacity: isLoggingIn ? 0.7 : 1,
+                boxSizing: 'border-box'
+              }}
             >
               {isLoggingIn ? (
                 <>
-                  <RefreshCw className="w-4 h-4 animate-spin" /> Verifying...
+                  <RefreshCw size={16} className="spin-animation" /> Verifying Credentials...
                 </>
               ) : (
                 <>
-                  Access Admin Dashboard <ArrowUpRight className="w-4 h-4" />
+                  Access Admin Dashboard <ShieldCheck size={16} />
                 </>
               )}
             </button>
           </form>
         </div>
+
+        <style>{`
+          .spin-animation {
+            animation: spin 1s linear infinite;
+          }
+          @keyframes spin {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+          }
+        `}</style>
       </div>
     );
   }
 
-  // Fallback state if metrics not yet loaded
+  // ------------------ ADMIN METRICS DASHBOARD ------------------
   const stats = metrics?.stats || {
     totalUsers: 0,
     activeUsers7d: 0,
@@ -214,204 +394,454 @@ export default function AdminDashboard({ onNavigateHome, onAdminLoggedOut }) {
   ];
 
   const planData = [
-    { name: 'Free Tier', value: stats.planCounts?.free || 1, color: '#94a3b8' },
-    { name: 'Pro ($12/m)', value: stats.planCounts?.pro || 1, color: '#8b5cf6' },
-    { name: 'Enterprise ($49/m)', value: stats.planCounts?.enterprise || 0, color: '#06b6d4' }
+    { name: 'Free Tier', value: stats.planCounts?.free || 1, color: '#8b8599' },
+    { name: 'Pro ($12/m)', value: stats.planCounts?.pro || 1, color: '#6f47b6' },
+    { name: 'Enterprise ($49/m)', value: stats.planCounts?.enterprise || 0, color: '#cf5571' }
   ];
 
   return (
-    <div className="min-h-screen bg-slate-950 text-slate-100 flex flex-col">
-      {/* Top Admin Navigation Header */}
-      <header className="border-b border-slate-800 bg-slate-900/90 backdrop-blur sticky top-0 z-40 px-6 py-4 flex items-center justify-between">
-        <div className="flex items-center gap-3">
+    <div
+      style={{
+        minHeight: '100vh',
+        backgroundColor: '#faf7f2',
+        color: '#24202e',
+        fontFamily: "'Plus Jakarta Sans', system-ui, -apple-system, sans-serif"
+      }}
+    >
+      {/* Top Navigation Bar */}
+      <header
+        style={{
+          backgroundColor: '#ffffff',
+          borderBottom: '1px solid #e8dfd5',
+          padding: '1rem 2rem',
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'space-between',
+          position: 'sticky',
+          top: 0,
+          zIndex: 40,
+          boxShadow: '0 2px 10px rgba(0,0,0,0.03)'
+        }}
+      >
+        <div style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
           <button
+            type="button"
             onClick={onNavigateHome}
-            className="p-2 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-300 hover:text-white transition-colors"
-            title="Back to App"
+            style={{
+              padding: '0.45rem 0.65rem',
+              borderRadius: '8px',
+              backgroundColor: '#f4eee6',
+              border: '1px solid #e4dcd0',
+              color: '#24202e',
+              cursor: 'pointer',
+              display: 'flex',
+              alignItems: 'center'
+            }}
+            title="Return to Skillora App"
           >
-            <ArrowLeft className="w-4 h-4" />
+            <ArrowLeft size={16} />
           </button>
-          <div className="w-9 h-9 rounded-xl bg-gradient-to-tr from-purple-600 to-indigo-600 flex items-center justify-center font-bold text-white shadow-md">
+          <div
+            style={{
+              width: '36px',
+              height: '36px',
+              borderRadius: '10px',
+              background: 'linear-gradient(135deg, #6f47b6, #44247f)',
+              color: '#ffffff',
+              fontWeight: 800,
+              fontSize: '1.1rem',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center'
+            }}
+          >
             S
           </div>
           <div>
-            <div className="flex items-center gap-2">
-              <h1 className="font-bold text-base text-white tracking-tight">Skillora Admin Console</h1>
-              <span className="px-2 py-0.5 rounded-full text-[10px] font-semibold bg-emerald-500/10 text-emerald-400 border border-emerald-500/30">
-                LIVE
+            <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+              <span style={{ fontWeight: 800, fontSize: '1.05rem', color: '#24202e' }}>
+                Skillora Admin Console
+              </span>
+              <span
+                style={{
+                  fontSize: '0.65rem',
+                  fontWeight: 700,
+                  backgroundColor: '#eaf6ee',
+                  color: '#1d743a',
+                  border: '1px solid #c6e9d0',
+                  padding: '0.15rem 0.45rem',
+                  borderRadius: '999px'
+                }}
+              >
+                LIVE ATLAS
               </span>
             </div>
-            <p className="text-xs text-slate-400">Production Control & Financial Performance</p>
+            <div style={{ fontSize: '0.75rem', color: '#6e677c' }}>
+              User telemetry, MRR economics & MongoDB cloud metrics
+            </div>
           </div>
         </div>
 
-        <div className="flex items-center gap-4">
-          <div className="hidden sm:flex items-center gap-2 text-xs text-slate-300 bg-slate-800/80 px-3 py-1.5 rounded-lg border border-slate-700">
-            <Cloud className="w-3.5 h-3.5 text-cyan-400" />
-            <span>DB: MongoDB Atlas Cloud</span>
+        <div style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
+          <div
+            style={{
+              display: 'flex',
+              alignItems: 'center',
+              gap: '0.4rem',
+              fontSize: '0.78rem',
+              color: '#44247f',
+              backgroundColor: '#f6f3fc',
+              border: '1px solid #ddd0f1',
+              padding: '0.4rem 0.75rem',
+              borderRadius: '8px'
+            }}
+          >
+            <Cloud size={14} color="#6f47b6" />
+            <span>MongoDB Atlas Cluster</span>
           </div>
 
           <button
+            type="button"
             onClick={loadMetrics}
             disabled={isLoadingMetrics}
-            className="p-2 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-300 hover:text-white transition-colors disabled:opacity-50"
-            title="Refresh Data"
+            style={{
+              padding: '0.45rem 0.65rem',
+              borderRadius: '8px',
+              backgroundColor: '#f4eee6',
+              border: '1px solid #e4dcd0',
+              color: '#24202e',
+              cursor: 'pointer',
+              display: 'flex',
+              alignItems: 'center'
+            }}
+            title="Refresh Metrics"
           >
-            <RefreshCw className={`w-4 h-4 ${isLoadingMetrics ? 'animate-spin' : ''}`} />
+            <RefreshCw size={15} className={isLoadingMetrics ? 'spin-animation' : ''} />
           </button>
 
-          <div className="flex items-center gap-3 pl-2 border-l border-slate-800">
-            <div className="text-right hidden sm:block">
-              <div className="text-xs font-semibold text-white">{adminUser.name}</div>
-              <div className="text-[11px] text-purple-400 font-mono">Superadmin</div>
-            </div>
-            <button
-              onClick={handleLogout}
-              className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-rose-500/10 hover:bg-rose-500/20 text-rose-300 border border-rose-500/30 text-xs font-medium transition-colors cursor-pointer"
-            >
-              <LogOut className="w-3.5 h-3.5" />
-              <span>Exit</span>
-            </button>
-          </div>
+          <button
+            type="button"
+            onClick={handleLogout}
+            style={{
+              display: 'flex',
+              alignItems: 'center',
+              gap: '0.4rem',
+              padding: '0.45rem 0.85rem',
+              borderRadius: '8px',
+              backgroundColor: '#fdf2f2',
+              border: '1px solid #f8b4b4',
+              color: '#9b1c1c',
+              fontSize: '0.8rem',
+              fontWeight: 600,
+              cursor: 'pointer'
+            }}
+          >
+            <LogOut size={14} /> Exit
+          </button>
         </div>
       </header>
 
-      {/* Main Admin Content Container */}
-      <main className="flex-1 p-6 max-w-7xl w-full mx-auto space-y-6">
+      {/* Main Content Area */}
+      <main style={{ maxWidth: '1200px', margin: '0 auto', padding: '2rem 1.5rem' }}>
         {metricsError && (
-          <div className="p-4 bg-amber-500/10 border border-amber-500/30 rounded-xl text-amber-300 text-xs flex items-center justify-between">
-            <span>{metricsError} (Displaying cached platform telemetry)</span>
-            <button onClick={loadMetrics} className="underline font-semibold ml-2">Retry</button>
+          <div
+            style={{
+              padding: '0.85rem 1.25rem',
+              backgroundColor: '#fef7e8',
+              border: '1px solid #f9d89c',
+              borderRadius: '12px',
+              color: '#966007',
+              fontSize: '0.85rem',
+              marginBottom: '1.5rem',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'space-between'
+            }}
+          >
+            <span>{metricsError}</span>
+            <button
+              onClick={loadMetrics}
+              style={{ fontWeight: 700, textDecoration: 'underline', background: 'none', border: 'none', cursor: 'pointer', color: '#966007' }}
+            >
+              Retry
+            </button>
           </div>
         )}
 
-        {/* Top 4 KPI Metric Cards */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-          {/* Total Registered Users */}
-          <div className="bg-slate-900 border border-slate-800 rounded-2xl p-5 hover:border-slate-700 transition-all shadow-sm">
-            <div className="flex items-center justify-between">
-              <span className="text-xs font-medium text-slate-400">Total Users</span>
-              <div className="w-8 h-8 rounded-lg bg-blue-500/10 text-blue-400 flex items-center justify-center">
-                <Users className="w-4 h-4" />
+        {/* 4 Key Performance Metric Cards */}
+        <div
+          style={{
+            display: 'grid',
+            gridTemplateColumns: 'repeat(auto-fit, minmax(240px, 1fr))',
+            gap: '1.25rem',
+            marginBottom: '2rem'
+          }}
+        >
+          {/* Card 1: Total Users */}
+          <div
+            style={{
+              backgroundColor: '#ffffff',
+              borderRadius: '16px',
+              border: '1px solid #e8dfd5',
+              padding: '1.5rem',
+              boxShadow: '0 4px 15px -2px rgba(0,0,0,0.03)'
+            }}
+          >
+            <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '0.75rem' }}>
+              <span style={{ fontSize: '0.8rem', fontWeight: 700, color: '#6e677c', textTransform: 'uppercase' }}>
+                Total Registered Users
+              </span>
+              <div
+                style={{
+                  width: '32px',
+                  height: '32px',
+                  borderRadius: '8px',
+                  backgroundColor: '#eee7f8',
+                  color: '#6f47b6',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center'
+                }}
+              >
+                <Users size={16} />
               </div>
             </div>
-            <div className="mt-3 flex items-baseline gap-2">
-              <span className="text-3xl font-extrabold text-white tracking-tight">{stats.totalUsers}</span>
-              <span className="text-xs text-emerald-400 font-medium">+{stats.activeUsers7d} active (7d)</span>
+            <div style={{ display: 'flex', alignItems: 'baseline', gap: '0.5rem' }}>
+              <span style={{ fontSize: '2.2rem', fontWeight: 800, color: '#24202e' }}>{stats.totalUsers}</span>
+              <span style={{ fontSize: '0.78rem', color: '#1d743a', fontWeight: 700 }}>
+                +{stats.activeUsers7d} active (7d)
+              </span>
             </div>
-            <p className="text-[11px] text-slate-400 mt-2">Active students & portfolio creators</p>
+            <div style={{ fontSize: '0.76rem', color: '#8b8599', marginTop: '0.4rem' }}>
+              Accounts in MongoDB Atlas
+            </div>
           </div>
 
-          {/* Total Revenue */}
-          <div className="bg-slate-900 border border-slate-800 rounded-2xl p-5 hover:border-slate-700 transition-all shadow-sm">
-            <div className="flex items-center justify-between">
-              <span className="text-xs font-medium text-slate-400">Gross Revenue (MRR)</span>
-              <div className="w-8 h-8 rounded-lg bg-emerald-500/10 text-emerald-400 flex items-center justify-center">
-                <DollarSign className="w-4 h-4" />
+          {/* Card 2: Gross Monthly Revenue */}
+          <div
+            style={{
+              backgroundColor: '#ffffff',
+              borderRadius: '16px',
+              border: '1px solid #e8dfd5',
+              padding: '1.5rem',
+              boxShadow: '0 4px 15px -2px rgba(0,0,0,0.03)'
+            }}
+          >
+            <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '0.75rem' }}>
+              <span style={{ fontSize: '0.8rem', fontWeight: 700, color: '#6e677c', textTransform: 'uppercase' }}>
+                Gross Revenue (MRR)
+              </span>
+              <div
+                style={{
+                  width: '32px',
+                  height: '32px',
+                  borderRadius: '8px',
+                  backgroundColor: '#eaf6ee',
+                  color: '#1d743a',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center'
+                }}
+              >
+                <DollarSign size={16} />
               </div>
             </div>
-            <div className="mt-3 flex items-baseline gap-2">
-              <span className="text-3xl font-extrabold text-emerald-400 tracking-tight">${stats.totalRevenue}</span>
-              <span className="text-xs text-slate-400">/ month</span>
+            <div style={{ display: 'flex', alignItems: 'baseline', gap: '0.35rem' }}>
+              <span style={{ fontSize: '2.2rem', fontWeight: 800, color: '#1d743a' }}>${stats.totalRevenue}</span>
+              <span style={{ fontSize: '0.8rem', color: '#6e677c' }}>/ month</span>
             </div>
-            <p className="text-[11px] text-slate-400 mt-2">Pro ($12) & Enterprise ($49) plans</p>
+            <div style={{ fontSize: '0.76rem', color: '#8b8599', marginTop: '0.4rem' }}>
+              Pro ($12) & Enterprise ($49) plans
+            </div>
           </div>
 
-          {/* Net Profit */}
-          <div className="bg-slate-900 border border-slate-800 rounded-2xl p-5 hover:border-slate-700 transition-all shadow-sm">
-            <div className="flex items-center justify-between">
-              <span className="text-xs font-medium text-slate-400">Net Profit</span>
-              <div className="w-8 h-8 rounded-lg bg-purple-500/10 text-purple-400 flex items-center justify-center">
-                <TrendingUp className="w-4 h-4" />
+          {/* Card 3: Net Profit */}
+          <div
+            style={{
+              backgroundColor: '#ffffff',
+              borderRadius: '16px',
+              border: '1px solid #e8dfd5',
+              padding: '1.5rem',
+              boxShadow: '0 4px 15px -2px rgba(0,0,0,0.03)'
+            }}
+          >
+            <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '0.75rem' }}>
+              <span style={{ fontSize: '0.8rem', fontWeight: 700, color: '#6e677c', textTransform: 'uppercase' }}>
+                Estimated Net Profit
+              </span>
+              <div
+                style={{
+                  width: '32px',
+                  height: '32px',
+                  borderRadius: '8px',
+                  backgroundColor: '#eee7f8',
+                  color: '#57339b',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center'
+                }}
+              >
+                <TrendingUp size={16} />
               </div>
             </div>
-            <div className="mt-3 flex items-baseline gap-2">
-              <span className="text-3xl font-extrabold text-purple-400 tracking-tight">${stats.estimatedProfit}</span>
-              <span className="text-xs text-purple-300 font-semibold">{stats.profitMargin} margin</span>
+            <div style={{ display: 'flex', alignItems: 'baseline', gap: '0.5rem' }}>
+              <span style={{ fontSize: '2.2rem', fontWeight: 800, color: '#57339b' }}>${stats.estimatedProfit}</span>
+              <span
+                style={{
+                  fontSize: '0.72rem',
+                  fontWeight: 700,
+                  backgroundColor: '#eee7f8',
+                  color: '#57339b',
+                  padding: '0.15rem 0.45rem',
+                  borderRadius: '6px'
+                }}
+              >
+                {stats.profitMargin} margin
+              </span>
             </div>
-            <p className="text-[11px] text-slate-400 mt-2">After ~${stats.estimatedExpenses}/mo hosting expenses</p>
+            <div style={{ fontSize: '0.76rem', color: '#8b8599', marginTop: '0.4rem' }}>
+              After ~${stats.estimatedExpenses}/mo hosting expenses
+            </div>
           </div>
 
-          {/* Platform Skills & Learning Milestones */}
-          <div className="bg-slate-900 border border-slate-800 rounded-2xl p-5 hover:border-slate-700 transition-all shadow-sm">
-            <div className="flex items-center justify-between">
-              <span className="text-xs font-medium text-slate-400">Skills Tracked</span>
-              <div className="w-8 h-8 rounded-lg bg-indigo-500/10 text-indigo-400 flex items-center justify-center">
-                <Award className="w-4 h-4" />
+          {/* Card 4: Platform Milestones */}
+          <div
+            style={{
+              backgroundColor: '#ffffff',
+              borderRadius: '16px',
+              border: '1px solid #e8dfd5',
+              padding: '1.5rem',
+              boxShadow: '0 4px 15px -2px rgba(0,0,0,0.03)'
+            }}
+          >
+            <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '0.75rem' }}>
+              <span style={{ fontSize: '0.8rem', fontWeight: 700, color: '#6e677c', textTransform: 'uppercase' }}>
+                Skills & Activity
+              </span>
+              <div
+                style={{
+                  width: '32px',
+                  height: '32px',
+                  borderRadius: '8px',
+                  backgroundColor: '#fdf3f5',
+                  color: '#cf5571',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center'
+                }}
+              >
+                <Award size={16} />
               </div>
             </div>
-            <div className="mt-3 flex items-baseline gap-2">
-              <span className="text-3xl font-extrabold text-white tracking-tight">{stats.totalSkills}</span>
-              <span className="text-xs text-indigo-400 font-medium">{stats.totalGoals} goals set</span>
+            <div style={{ display: 'flex', alignItems: 'baseline', gap: '0.5rem' }}>
+              <span style={{ fontSize: '2.2rem', fontWeight: 800, color: '#24202e' }}>{stats.totalSkills}</span>
+              <span style={{ fontSize: '0.78rem', color: '#cf5571', fontWeight: 700 }}>
+                {stats.totalGoals} goals set
+              </span>
             </div>
-            <p className="text-[11px] text-slate-400 mt-2">{stats.totalActivities} learning actions completed</p>
+            <div style={{ fontSize: '0.76rem', color: '#8b8599', marginTop: '0.4rem' }}>
+              {stats.totalActivities} learning actions verified
+            </div>
           </div>
         </div>
 
-        {/* Charts Section: Revenue vs Profit + Plan Breakdown */}
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-          {/* Revenue & Profit Area Chart */}
-          <div className="lg:col-span-2 bg-slate-900 border border-slate-800 rounded-2xl p-6">
-            <div className="flex items-center justify-between mb-4">
+        {/* Charts: Revenue vs Net Profit + Plan Distribution */}
+        <div
+          style={{
+            display: 'grid',
+            gridTemplateColumns: 'repeat(auto-fit, minmax(320px, 1fr))',
+            gap: '1.5rem',
+            marginBottom: '2rem'
+          }}
+        >
+          {/* Revenue vs Profit Growth Area Chart */}
+          <div
+            style={{
+              backgroundColor: '#ffffff',
+              borderRadius: '16px',
+              border: '1px solid #e8dfd5',
+              padding: '1.75rem',
+              boxShadow: '0 4px 15px -2px rgba(0,0,0,0.03)'
+            }}
+          >
+            <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '1.25rem' }}>
               <div>
-                <h3 className="font-semibold text-white text-base">Revenue vs. Net Profit Growth</h3>
-                <p className="text-xs text-slate-400">6-Month financial trajectory and unit economics</p>
-              </div>
-              <div className="flex items-center gap-4 text-xs">
-                <div className="flex items-center gap-1.5">
-                  <div className="w-3 h-3 rounded-full bg-emerald-500" />
-                  <span className="text-slate-300">Revenue</span>
+                <h3 style={{ margin: 0, fontSize: '1.05rem', fontWeight: 800, color: '#24202e' }}>
+                  Revenue & Net Profit Trajectory
+                </h3>
+                <div style={{ fontSize: '0.78rem', color: '#6e677c', marginTop: '0.2rem' }}>
+                  6-month unit economics & cashflow simulation
                 </div>
-                <div className="flex items-center gap-1.5">
-                  <div className="w-3 h-3 rounded-full bg-purple-500" />
-                  <span className="text-slate-300">Net Profit</span>
+              </div>
+              <div style={{ display: 'flex', alignItems: 'center', gap: '1rem', fontSize: '0.78rem' }}>
+                <div style={{ display: 'flex', alignItems: 'center', gap: '0.35rem' }}>
+                  <div style={{ width: '10px', height: '10px', borderRadius: '50%', backgroundColor: '#1d743a' }} />
+                  <span style={{ color: '#24202e', fontWeight: 600 }}>Revenue</span>
+                </div>
+                <div style={{ display: 'flex', alignItems: 'center', gap: '0.35rem' }}>
+                  <div style={{ width: '10px', height: '10px', borderRadius: '50%', backgroundColor: '#6f47b6' }} />
+                  <span style={{ color: '#24202e', fontWeight: 600 }}>Net Profit</span>
                 </div>
               </div>
             </div>
 
-            <div className="h-64 w-full">
+            <div style={{ width: '100%', height: '220px' }}>
               <ResponsiveContainer width="100%" height="100%">
                 <AreaChart data={monthlyFinancials} margin={{ top: 10, right: 10, left: -20, bottom: 0 }}>
                   <defs>
-                    <linearGradient id="colorRev" x1="0" y1="0" x2="0" y2="1">
-                      <stop offset="5%" stopColor="#10b981" stopOpacity={0.4} />
-                      <stop offset="95%" stopColor="#10b981" stopOpacity={0} />
+                    <linearGradient id="colorRevWarm" x1="0" y1="0" x2="0" y2="1">
+                      <stop offset="5%" stopColor="#1d743a" stopOpacity={0.35} />
+                      <stop offset="95%" stopColor="#1d743a" stopOpacity={0} />
                     </linearGradient>
-                    <linearGradient id="colorProfit" x1="0" y1="0" x2="0" y2="1">
-                      <stop offset="5%" stopColor="#a855f7" stopOpacity={0.4} />
-                      <stop offset="95%" stopColor="#a855f7" stopOpacity={0} />
+                    <linearGradient id="colorProfitWarm" x1="0" y1="0" x2="0" y2="1">
+                      <stop offset="5%" stopColor="#6f47b6" stopOpacity={0.35} />
+                      <stop offset="95%" stopColor="#6f47b6" stopOpacity={0} />
                     </linearGradient>
                   </defs>
-                  <CartesianGrid strokeDasharray="3 3" stroke="#334155" />
-                  <XAxis dataKey="month" stroke="#64748b" tick={{ fontSize: 12 }} />
-                  <YAxis stroke="#64748b" tick={{ fontSize: 12 }} />
+                  <CartesianGrid strokeDasharray="3 3" stroke="#eee7de" />
+                  <XAxis dataKey="month" stroke="#8b8599" tick={{ fontSize: 11 }} />
+                  <YAxis stroke="#8b8599" tick={{ fontSize: 11 }} />
                   <Tooltip
-                    contentStyle={{ backgroundColor: '#0f172a', borderColor: '#334155', borderRadius: '8px' }}
-                    itemStyle={{ color: '#f8fafc', fontSize: '12px' }}
+                    contentStyle={{ backgroundColor: '#ffffff', borderColor: '#e8dfd5', borderRadius: '8px', boxShadow: '0 4px 12px rgba(0,0,0,0.08)' }}
                   />
-                  <Area type="monotone" dataKey="revenue" stroke="#10b981" strokeWidth={2} fillOpacity={1} fill="url(#colorRev)" />
-                  <Area type="monotone" dataKey="profit" stroke="#a855f7" strokeWidth={2} fillOpacity={1} fill="url(#colorProfit)" />
+                  <Area type="monotone" dataKey="revenue" stroke="#1d743a" strokeWidth={2.5} fillOpacity={1} fill="url(#colorRevWarm)" />
+                  <Area type="monotone" dataKey="profit" stroke="#6f47b6" strokeWidth={2.5} fillOpacity={1} fill="url(#colorProfitWarm)" />
                 </AreaChart>
               </ResponsiveContainer>
             </div>
           </div>
 
-          {/* User Tier Breakdown */}
-          <div className="bg-slate-900 border border-slate-800 rounded-2xl p-6 flex flex-col justify-between">
+          {/* Plan Distribution Chart */}
+          <div
+            style={{
+              backgroundColor: '#ffffff',
+              borderRadius: '16px',
+              border: '1px solid #e8dfd5',
+              padding: '1.75rem',
+              boxShadow: '0 4px 15px -2px rgba(0,0,0,0.03)',
+              display: 'flex',
+              flexDirection: 'column',
+              justifyContent: 'space-between'
+            }}
+          >
             <div>
-              <h3 className="font-semibold text-white text-base">Plan Distribution</h3>
-              <p className="text-xs text-slate-400">Subscription tiers contributing to MRR</p>
+              <h3 style={{ margin: 0, fontSize: '1.05rem', fontWeight: 800, color: '#24202e' }}>
+                Subscription Plan Tiers
+              </h3>
+              <div style={{ fontSize: '0.78rem', color: '#6e677c', marginTop: '0.2rem' }}>
+                Active user breakdown contributing to MRR
+              </div>
             </div>
 
-            <div className="h-44 w-full my-2">
+            <div style={{ width: '100%', height: '150px' }}>
               <ResponsiveContainer width="100%" height="100%">
                 <PieChart>
                   <Pie
                     data={planData}
                     cx="50%"
                     cy="50%"
-                    innerRadius={45}
-                    outerRadius={65}
+                    innerRadius={40}
+                    outerRadius={60}
                     paddingAngle={4}
                     dataKey="value"
                   >
@@ -419,91 +849,151 @@ export default function AdminDashboard({ onNavigateHome, onAdminLoggedOut }) {
                       <Cell key={`cell-${index}`} fill={entry.color} />
                     ))}
                   </Pie>
-                  <Tooltip
-                    contentStyle={{ backgroundColor: '#0f172a', borderColor: '#334155', borderRadius: '8px' }}
-                  />
+                  <Tooltip />
                 </PieChart>
               </ResponsiveContainer>
             </div>
 
-            <div className="space-y-2 text-xs">
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem', marginTop: '0.5rem' }}>
               {planData.map((p, idx) => (
-                <div key={idx} className="flex items-center justify-between p-2 rounded-lg bg-slate-800/60">
-                  <div className="flex items-center gap-2">
-                    <div className="w-2.5 h-2.5 rounded-full" style={{ backgroundColor: p.color }} />
-                    <span className="text-slate-300">{p.name}</span>
+                <div
+                  key={idx}
+                  style={{
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'space-between',
+                    padding: '0.5rem 0.85rem',
+                    borderRadius: '8px',
+                    backgroundColor: '#faf7f2',
+                    border: '1px solid #eee7de',
+                    fontSize: '0.8rem'
+                  }}
+                >
+                  <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+                    <div style={{ width: '10px', height: '10px', borderRadius: '50%', backgroundColor: p.color }} />
+                    <span style={{ color: '#24202e', fontWeight: 600 }}>{p.name}</span>
                   </div>
-                  <span className="font-semibold text-white">{p.value} users</span>
+                  <span style={{ fontWeight: 800, color: '#57339b' }}>{p.value} users</span>
                 </div>
               ))}
             </div>
           </div>
         </div>
 
-        {/* Registered Users Table */}
-        <div className="bg-slate-900 border border-slate-800 rounded-2xl overflow-hidden shadow-sm">
-          <div className="p-6 border-b border-slate-800 flex items-center justify-between">
+        {/* Live MongoDB Atlas User Directory Table */}
+        <div
+          style={{
+            backgroundColor: '#ffffff',
+            borderRadius: '16px',
+            border: '1px solid #e8dfd5',
+            boxShadow: '0 4px 15px -2px rgba(0,0,0,0.03)',
+            overflow: 'hidden'
+          }}
+        >
+          <div
+            style={{
+              padding: '1.25rem 1.75rem',
+              borderBottom: '1px solid #e8dfd5',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'space-between',
+              backgroundColor: '#fdfbf7'
+            }}
+          >
             <div>
-              <h3 className="font-semibold text-white text-base">User Directory & Status</h3>
-              <p className="text-xs text-slate-400">Real-time view of accounts registered on MongoDB</p>
+              <h3 style={{ margin: 0, fontSize: '1rem', fontWeight: 800, color: '#24202e' }}>
+                Registered User Directory
+              </h3>
+              <div style={{ fontSize: '0.76rem', color: '#6e677c' }}>
+                Real-time user accounts stored in MongoDB Atlas
+              </div>
             </div>
-            <div className="text-xs text-slate-400">
-              Showing top {metrics?.recentUsers?.length || 0} accounts
-            </div>
+            <span
+              style={{
+                fontSize: '0.72rem',
+                fontWeight: 700,
+                color: '#57339b',
+                backgroundColor: '#eee7f8',
+                padding: '0.25rem 0.65rem',
+                borderRadius: '6px'
+              }}
+            >
+              {metrics?.recentUsers?.length || 0} Accounts Found
+            </span>
           </div>
 
-          <div className="overflow-x-auto">
-            <table className="w-full text-left text-xs">
-              <thead className="bg-slate-950/60 text-slate-400 border-b border-slate-800 uppercase text-[10px] tracking-wider">
-                <tr>
-                  <th className="py-3 px-6">User / Student</th>
-                  <th className="py-3 px-6">Institution</th>
-                  <th className="py-3 px-6">Tier</th>
-                  <th className="py-3 px-6">Joined Date</th>
-                  <th className="py-3 px-6 text-right">Status</th>
+          <div style={{ overflowX: 'auto' }}>
+            <table style={{ width: '100%', borderCollapse: 'collapse', textAlign: 'left', fontSize: '0.85rem' }}>
+              <thead>
+                <tr style={{ backgroundColor: '#faf7f2', borderBottom: '1px solid #e8dfd5', color: '#6e677c', fontSize: '0.74rem', textTransform: 'uppercase', letterSpacing: '0.04em' }}>
+                  <th style={{ padding: '0.85rem 1.5rem' }}>Student / User</th>
+                  <th style={{ padding: '0.85rem 1.5rem' }}>Institution / Degree</th>
+                  <th style={{ padding: '0.85rem 1.5rem' }}>Tier</th>
+                  <th style={{ padding: '0.85rem 1.5rem' }}>Joined Date</th>
+                  <th style={{ padding: '0.85rem 1.5rem', textAlign: 'right' }}>Status</th>
                 </tr>
               </thead>
-              <tbody className="divide-y divide-slate-800 text-slate-300">
+              <tbody>
                 {(metrics?.recentUsers || []).length > 0 ? (
                   metrics.recentUsers.map((u, i) => (
-                    <tr key={i} className="hover:bg-slate-800/50 transition-colors">
-                      <td className="py-3.5 px-6 font-medium text-white flex items-center gap-2.5">
-                        <div className="w-7 h-7 rounded-full bg-purple-500/20 text-purple-300 flex items-center justify-center font-bold text-xs uppercase">
-                          {u.name?.slice(0, 2) || 'US'}
-                        </div>
-                        <div>
-                          <div>{u.name}</div>
-                          <div className="text-[11px] text-slate-400">{u.email}</div>
+                    <tr key={i} style={{ borderBottom: '1px solid #f4eee6' }}>
+                      <td style={{ padding: '1rem 1.5rem', fontWeight: 600, color: '#24202e' }}>
+                        <div style={{ display: 'flex', alignItems: 'center', gap: '0.65rem' }}>
+                          <div
+                            style={{
+                              width: '32px',
+                              height: '32px',
+                              borderRadius: '50%',
+                              backgroundColor: '#eee7f8',
+                              color: '#6f47b6',
+                              fontWeight: 700,
+                              fontSize: '0.78rem',
+                              display: 'flex',
+                              alignItems: 'center',
+                              justifyContent: 'center'
+                            }}
+                          >
+                            {u.name?.slice(0, 2).toUpperCase() || 'ST'}
+                          </div>
+                          <div>
+                            <div>{u.name}</div>
+                            <div style={{ fontSize: '0.75rem', color: '#8b8599', fontWeight: 400 }}>{u.email}</div>
+                          </div>
                         </div>
                       </td>
-                      <td className="py-3.5 px-6 text-slate-300">
-                        {u.institution || u.education || 'Self-Learner'}
+                      <td style={{ padding: '1rem 1.5rem', color: '#5a5468' }}>
+                        {u.institution || u.education || 'Self-Directed Learner'}
                       </td>
-                      <td className="py-3.5 px-6">
-                        <span className={`px-2 py-0.5 rounded text-[10px] font-semibold uppercase ${
-                          u.plan === 'enterprise'
-                            ? 'bg-cyan-500/10 text-cyan-400 border border-cyan-500/30'
-                            : u.plan === 'pro' || u.isDemo
-                            ? 'bg-purple-500/10 text-purple-400 border border-purple-500/30'
-                            : 'bg-slate-800 text-slate-400'
-                        }`}>
+                      <td style={{ padding: '1rem 1.5rem' }}>
+                        <span
+                          style={{
+                            fontSize: '0.72rem',
+                            fontWeight: 700,
+                            textTransform: 'uppercase',
+                            padding: '0.2rem 0.55rem',
+                            borderRadius: '6px',
+                            backgroundColor: u.plan === 'enterprise' ? '#fdf3f5' : '#eee7f8',
+                            color: u.plan === 'enterprise' ? '#cf5571' : '#57339b',
+                            border: `1px solid ${u.plan === 'enterprise' ? '#f6ccd5' : '#ddd0f1'}`
+                          }}
+                        >
                           {u.plan || (u.isDemo ? 'pro' : 'free')}
                         </span>
                       </td>
-                      <td className="py-3.5 px-6 text-slate-400 font-mono text-[11px]">
-                        {u.createdAt ? new Date(u.createdAt).toLocaleDateString() : 'Recent'}
+                      <td style={{ padding: '1rem 1.5rem', color: '#8b8599', fontSize: '0.8rem' }}>
+                        {u.createdAt ? new Date(u.createdAt).toLocaleDateString() : 'Active'}
                       </td>
-                      <td className="py-3.5 px-6 text-right">
-                        <span className="inline-flex items-center gap-1 text-emerald-400 font-medium">
-                          <CheckCircle2 className="w-3.5 h-3.5" /> Active
+                      <td style={{ padding: '1rem 1.5rem', textAlign: 'right' }}>
+                        <span style={{ display: 'inline-flex', alignItems: 'center', gap: '0.3rem', color: '#1d743a', fontWeight: 700, fontSize: '0.78rem' }}>
+                          <CheckCircle2 size={14} /> Active
                         </span>
                       </td>
                     </tr>
                   ))
                 ) : (
                   <tr>
-                    <td colSpan="5" className="py-8 text-center text-slate-500">
-                      No user accounts found. Seed demo user or create accounts via Register.
+                    <td colSpan="5" style={{ padding: '2.5rem', textAlign: 'center', color: '#8b8599' }}>
+                      No user accounts found. Seed demo user or create an account via the Register tab.
                     </td>
                   </tr>
                 )}
@@ -511,27 +1001,17 @@ export default function AdminDashboard({ onNavigateHome, onAdminLoggedOut }) {
             </table>
           </div>
         </div>
-
-        {/* MongoDB Atlas & Deployment Status Banner */}
-        <div className="bg-gradient-to-r from-purple-950/40 to-slate-900 border border-purple-500/30 rounded-2xl p-5 flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
-          <div className="flex items-center gap-3">
-            <div className="p-3 bg-purple-500/20 rounded-xl text-purple-300">
-              <Server className="w-6 h-6" />
-            </div>
-            <div>
-              <h4 className="font-semibold text-white text-sm">MongoDB Atlas & Render Cloud Production Ready</h4>
-              <p className="text-xs text-slate-400 mt-0.5">
-                The database connection natively supports Atlas SRV strings, role-based security, and auto-seeding.
-              </p>
-            </div>
-          </div>
-          <div className="flex items-center gap-2">
-            <span className="px-3 py-1 bg-purple-600 text-white rounded-lg text-xs font-semibold">
-              Ready to Render
-            </span>
-          </div>
-        </div>
       </main>
+
+      <style>{`
+        .spin-animation {
+          animation: spin 1s linear infinite;
+        }
+        @keyframes spin {
+          from { transform: rotate(0deg); }
+          to { transform: rotate(360deg); }
+        }
+      `}</style>
     </div>
   );
 }
