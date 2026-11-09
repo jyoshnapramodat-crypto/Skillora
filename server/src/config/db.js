@@ -1,4 +1,12 @@
 import mongoose from 'mongoose';
+import dns from 'dns';
+
+// Ensure public DNS resolution for Atlas SRV in Windows/Sandbox/Cloud environments
+try {
+  dns.setServers(['8.8.8.8', '1.1.1.1']);
+} catch {
+  // Ignore if custom dns servers cannot be set
+}
 
 /**
  * Connect to MongoDB database via Mongoose
