@@ -14,7 +14,7 @@ server/.env
 
 # MongoDB local database storage
 server/data/
-data/
+/data/
 *.sock
 
 # Logs
